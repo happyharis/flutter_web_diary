@@ -22,7 +22,7 @@ class DiaryEntryButton extends StatelessWidget {
     return FloatingActionButton.extended(
       elevation: 2,
       onPressed: () {
-        // TODO: 3. Create add method to add diary entry to firestore when DiaryAction.add
+        // TODO: 1. Create add method to add diary entry to firestore when DiaryAction.add
 
         // TODO: 4. Create update method to edit diary entry to firestore when DiaryAction.edit with doc id
         Navigator.of(context).popUntil(ModalRoute.withName('/'));
