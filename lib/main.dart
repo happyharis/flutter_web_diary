@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_web_diary/diary_card.dart';
+import 'package:flutter_web_diary/diary_entry_model.dart';
 import 'package:flutter_web_diary/top_bar_title.dart';
+import 'package:provider/provider.dart';
 
 import 'diary_entry_page.dart';
 
@@ -9,18 +11,26 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'My Diary',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.indigo,
-        accentColor: Colors.pink,
+    // TODO: 2. Create diaries stream to return list of DiaryEntry-s instance
+    final diaryEntries = [
+      DiaryEntry(body: diaryEntry, title: 'Sad Life', emoji: '😢')
+    ];
+    //  TODO: 3. Change to stream provider
+    return Provider<List<DiaryEntry>>(
+      create: (_) => diaryEntries,
+      child: MaterialApp(
+        title: 'My Diary',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primarySwatch: Colors.indigo,
+          accentColor: Colors.pink,
+        ),
+        initialRoute: '/',
+        routes: {
+          '/': (context) => MyHomePage(),
+          '/new-entry': (context) => DiaryEntryPage.add(),
+        },
       ),
-      initialRoute: '/',
-      routes: {
-        '/': (context) => MyHomePage(),
-        '/new-entry': (context) => DiaryEntryPage(),
-      },
     );
   }
 }
@@ -37,6 +47,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
+    final diaryEntries = Provider.of<List<DiaryEntry>>(context);
     return Scaffold(
       appBar: AppBar(
         bottom: PreferredSize(
@@ -50,8 +61,12 @@ class _MyHomePageState extends State<MyHomePage> {
           width: MediaQuery.of(context).size.width * 3 / 5,
           child: ListView(
             children: <Widget>[
-              SizedBox(height: 90),
-              DiaryCard(),
+              SizedBox(height: 40),
+              if (diaryEntries != null)
+                for (var diaryData in diaryEntries)
+                  DiaryCard(diaryEntry: diaryData),
+              if (diaryEntries == null)
+                Center(child: CircularProgressIndicator()),
             ],
           ),
         ),
