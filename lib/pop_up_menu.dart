@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_diary/diary_entry_model.dart';
 import 'package:flutter_web_diary/diary_entry_page.dart';
@@ -27,8 +28,11 @@ class PopUpMenu extends StatelessWidget {
       onSelected: (action) {
         switch (action) {
           case Action.delete:
-            //TODO: 5. Create delete method with the doc id
             _showDeleteDialog(context, onDelete: () {
+              Firestore.instance
+                  .collection('diaries')
+                  .document(diaryEntry.documentId)
+                  .delete();
               Navigator.of(context).pop();
             });
             break;

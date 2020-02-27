@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_web_diary/diary_entry_model.dart';
 import 'package:flutter_web_diary/diary_entry_page.dart';
 
 class DiaryEntryButton extends StatelessWidget {
@@ -22,9 +24,21 @@ class DiaryEntryButton extends StatelessWidget {
     return FloatingActionButton.extended(
       elevation: 2,
       onPressed: () {
-        // TODO: 3. Create add method to add diary entry to firestore when DiaryAction.add
+        final data = DiaryEntry(
+          emoji: _emoji,
+          title: titleController.text,
+          body: bodyTextController.text,
+        ).toMap();
 
-        // TODO: 4. Create update method to edit diary entry to firestore when DiaryAction.edit with doc id
+        if (isAddAction) {
+          Firestore.instance.collection('diaries').add(data);
+        } else if (widget.diaryAction == DiaryAction.edit) {
+          final documentId = widget.diaryEntry.documentId;
+          Firestore.instance
+              .collection('diaries')
+              .document(documentId)
+              .updateData(data);
+        }
         Navigator.of(context).popUntil(ModalRoute.withName('/'));
       },
       label: Text(isAddAction ? 'Submit' : 'Update'),

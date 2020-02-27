@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_diary/diary_card.dart';
 import 'package:flutter_web_diary/diary_entry_model.dart';
@@ -11,12 +12,11 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // TODO: 2. Create diaries stream to return list of DiaryEntry-s instance
-    final diaryEntries = [
-      DiaryEntry(body: diaryEntry, title: 'Sad Life', emoji: '😢')
-    ];
-    //  TODO: 3. Change to stream provider
-    return Provider<List<DiaryEntry>>(
+    final diaryEntries =
+        Firestore.instance.collection('diaries').snapshots().map((snapshot) {
+      return snapshot.documents.map((doc) => DiaryEntry.fromDoc(doc)).toList();
+    });
+    return StreamProvider<List<DiaryEntry>>(
       create: (_) => diaryEntries,
       child: MaterialApp(
         title: 'My Diary',
