@@ -29,6 +29,7 @@ class PopUpMenu extends StatelessWidget {
         switch (action) {
           case Action.delete:
             _showDeleteDialog(context, onDelete: () {
+              // TODO: Answer 5 to delete a document
               Firestore.instance
                   .collection('diaries')
                   .document(diaryEntry.documentId)

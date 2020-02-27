@@ -31,8 +31,10 @@ class DiaryEntryButton extends StatelessWidget {
         ).toMap();
 
         if (isAddAction) {
+          // TODO: 1. Answer to add firestore document
           Firestore.instance.collection('diaries').add(data);
         } else if (widget.diaryAction == DiaryAction.edit) {
+          // TODO: 4. Answer to update firestore document
           final documentId = widget.diaryEntry.documentId;
           Firestore.instance
               .collection('diaries')

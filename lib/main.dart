@@ -12,10 +12,12 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // TODO: Answer 3 to add a stream that returns documents
     final diaryEntries =
         Firestore.instance.collection('diaries').snapshots().map((snapshot) {
       return snapshot.documents.map((doc) => DiaryEntry.fromDoc(doc)).toList();
     });
+    // TODO: Answer 4 to change provider to stream provider
     return StreamProvider<List<DiaryEntry>>(
       create: (_) => diaryEntries,
       child: MaterialApp(
