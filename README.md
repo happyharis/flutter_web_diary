@@ -1,16 +1,14 @@
-# flutter_to_do
+# Flutter Web Diary
 
-A new Flutter project.
+![image](https://user-images.githubusercontent.com/31005114/75440157-30634500-5996-11ea-8556-75f29c9752f3.png)
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+A material design-ish diary for oneself reflection, thoughts and idea.
 
-A few resources to get you started if this is your first Flutter project:
+## Features
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- [X] Create diary entry
+- [X] Read diary entry
+- [X] Update diary entry
+- [X] Delete diary entry
+- [ ] Mobile Responsive Design
