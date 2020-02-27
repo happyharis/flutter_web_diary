@@ -1,57 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_web_diary/diary_entry_button.dart';
+import 'package:flutter_web_diary/diary_entry_model.dart';
 import 'package:flutter_web_diary/emoji_helpers.dart';
 
 class DiaryEntryPage extends StatefulWidget {
   const DiaryEntryPage({
     Key key,
-    this.emoji,
-    this.title,
-    this.bodyText,
     this.diaryAction,
+    this.diaryEntry,
   }) : super(key: key);
 
   const DiaryEntryPage.edit(
-      {Key key,
-      this.emoji,
-      this.title,
-      this.bodyText,
-      this.diaryAction = DiaryAction.edit})
+      {Key key, this.diaryAction = DiaryAction.edit, this.diaryEntry})
       : super(key: key);
 
   const DiaryEntryPage.add(
-      {Key key,
-      this.emoji,
-      this.title,
-      this.bodyText,
-      this.diaryAction = DiaryAction.add})
+      {Key key, this.diaryAction = DiaryAction.add, this.diaryEntry})
       : super(key: key);
 
   const DiaryEntryPage.read(
-      {Key key,
-      this.emoji,
-      this.title,
-      this.bodyText,
-      this.diaryAction = DiaryAction.read})
+      {Key key, this.diaryAction = DiaryAction.read, this.diaryEntry})
       : super(key: key);
 
-  final Emoji emoji;
-  final String title;
-  final String bodyText;
+  final DiaryEntry diaryEntry;
+
   final DiaryAction diaryAction;
   @override
   _DiaryEntryPageState createState() => _DiaryEntryPageState();
 }
 
 class _DiaryEntryPageState extends State<DiaryEntryPage> {
-  Emoji _emoji;
+  String _emoji;
   TextEditingController titleController;
   TextEditingController bodyTextController;
   bool isReadOnly;
   @override
   void initState() {
-    _emoji = widget.emoji;
-    titleController = TextEditingController(text: widget.title);
-    bodyTextController = TextEditingController(text: widget.bodyText);
+    _emoji = widget.diaryEntry?.emoji ?? '';
+    titleController =
+        TextEditingController(text: widget.diaryEntry?.title ?? '');
+    bodyTextController =
+        TextEditingController(text: widget.diaryEntry?.body ?? '');
     isReadOnly = widget.diaryAction == DiaryAction.read;
     super.initState();
   }
@@ -59,6 +48,11 @@ class _DiaryEntryPageState extends State<DiaryEntryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        iconTheme: Theme.of(context).iconTheme.copyWith(color: Colors.black),
+        backgroundColor: Colors.transparent,
+      ),
       body: SingleChildScrollView(
         child: Center(
           child: SizedBox(
@@ -67,34 +61,40 @@ class _DiaryEntryPageState extends State<DiaryEntryPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 SizedBox(height: 50),
-                PopupMenuButton(
-                  itemBuilder: (context) {
-                    return [
-                      PopupMenuItem(
-                        child: Text('😄 Happy'),
-                        value: Emoji.happy,
-                      ),
-                      PopupMenuItem(
-                        child: Text('😭 Sad'),
-                        value: Emoji.sad,
-                      ),
-                      PopupMenuItem(
-                        child: Text('😡 Angry'),
-                        value: Emoji.angry,
-                      ),
-                    ];
-                  },
-                  child: _emoji == null
-                      ? Text('Add Emoji')
-                      : Text(
-                          emojiSelected(_emoji),
-                          style: TextStyle(
-                            fontSize: 65,
-                          ),
+                if (isReadOnly)
+                  Text(_emoji ?? '', style: TextStyle(fontSize: 65)),
+                if (!isReadOnly)
+                  PopupMenuButton(
+                    itemBuilder: (context) {
+                      return [
+                        PopupMenuItem(
+                          child: Text('😄 Happy'),
+                          value: Emoji.happy,
                         ),
-                  onSelected: (selectedEmoji) =>
-                      setState(() => _emoji = selectedEmoji),
-                ),
+                        PopupMenuItem(
+                          child: Text('😭 Sad'),
+                          value: Emoji.sad,
+                        ),
+                        PopupMenuItem(
+                          child: Text('😡 Angry'),
+                          value: Emoji.angry,
+                        ),
+                      ];
+                    },
+                    child: _emoji.isEmpty
+                        ? Text('Add Emoji')
+                        : Text(
+                            _emoji,
+                            style: TextStyle(
+                              fontSize: 65,
+                            ),
+                          ),
+                    onSelected: (selectedEmoji) {
+                      setState(() {
+                        _emoji = emojiSelected(selectedEmoji);
+                      });
+                    },
+                  ),
                 // Title
                 TextField(
                   readOnly: isReadOnly,
@@ -105,7 +105,7 @@ class _DiaryEntryPageState extends State<DiaryEntryPage> {
                       .copyWith(color: Colors.black87),
                   decoration: InputDecoration(
                     border: InputBorder.none,
-                    labelText: 'Title',
+                    labelText: isReadOnly ? '' : 'Title',
                   ),
                 ),
                 // Body text
@@ -133,16 +133,14 @@ class _DiaryEntryPageState extends State<DiaryEntryPage> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FloatingActionButton.extended(
-        elevation: 2,
-        onPressed: () {
-          // TODO: If diary action is edit, then insert firestore add with the current text.
-          // TODO: If diary action is add, then insert firestore edit with new text.
-          Navigator.of(context).popUntil(ModalRoute.withName('/'));
-        },
-        label: Text('Submit'),
-        icon: Icon(Icons.book),
-      ),
+      floatingActionButton: isReadOnly
+          ? SizedBox()
+          : DiaryEntryButton(
+              titleController: titleController,
+              bodyTextController: bodyTextController,
+              emoji: _emoji,
+              widget: widget,
+            ),
     );
   }
 

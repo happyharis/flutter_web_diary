@@ -17,10 +17,13 @@
   <body>
     <script src="https://www.gstatic.com/firebasejs/7.9.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.9.1/firebase-firestore.js"></script>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
 
     <script>
-      // TODO: Replace the following with your app's Firebase project configuration.
-      // See: https://support.google.com/firebase/answer/7015592
+      // Your web app's Firebase configuration
       var firebaseConfig = {
         apiKey: "...",
         authDomain: "[YOUR_PROJECT].firebaseapp.com",
@@ -28,8 +31,7 @@
         projectId: "[YOUR_PROJECT]",
         storageBucket: "[YOUR_PROJECT].appspot.com",
         messagingSenderId: "...",
-        appId: "1:...:web:...",
-        measurementId: "G-..."
+        appId: "1:...:web:..."
       };
       // Initialize Firebase
       firebase.initializeApp(firebaseConfig);
