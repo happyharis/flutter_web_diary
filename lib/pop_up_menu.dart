@@ -15,12 +15,12 @@ class PopUpMenu extends StatelessWidget {
       itemBuilder: (context) {
         return [
           PopupMenuItem(
-            value: Action.delete,
-            child: Text('Delete'),
-          ),
-          PopupMenuItem(
             value: Action.edit,
             child: Text('Edit'),
+          ),
+          PopupMenuItem(
+            value: Action.delete,
+            child: Text('Delete'),
           ),
         ];
       },
