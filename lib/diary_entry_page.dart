@@ -68,15 +68,24 @@ class _DiaryEntryPageState extends State<DiaryEntryPage> {
                     itemBuilder: (context) {
                       return [
                         PopupMenuItem(
-                          child: Text('😄 Happy'),
+                          child: Text(
+                            '😄 Happy',
+                            style: TextStyle(height: 1.2),
+                          ),
                           value: Emoji.happy,
                         ),
                         PopupMenuItem(
-                          child: Text('😭 Sad'),
+                          child: Text(
+                            '😭 Sad',
+                            style: TextStyle(height: 1.2),
+                          ),
                           value: Emoji.sad,
                         ),
                         PopupMenuItem(
-                          child: Text('😡 Angry'),
+                          child: Text(
+                            '😡 Angry',
+                            style: TextStyle(height: 1.2),
+                          ),
                           value: Emoji.angry,
                         ),
                       ];
