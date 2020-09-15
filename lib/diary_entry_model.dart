@@ -24,10 +24,10 @@ class DiaryEntry {
     if (doc == null) return null;
 
     return DiaryEntry(
-      emoji: doc.data['emoji'],
-      title: doc.data['title'],
-      body: doc.data['body'],
-      documentId: doc.documentID,
+      emoji: doc.data()['emoji'],
+      title: doc.data()['title'],
+      body: doc.data()['body'],
+      documentId: doc.id,
     );
   }
 

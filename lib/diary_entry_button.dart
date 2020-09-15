@@ -32,14 +32,14 @@ class DiaryEntryButton extends StatelessWidget {
 
         if (isAddAction) {
           // TODO: 1. Answer to add firestore document
-          Firestore.instance.collection('diaries').add(data);
+          FirebaseFirestore.instance.collection('diaries').add(data);
         } else if (widget.diaryAction == DiaryAction.edit) {
           // TODO: 4. Answer to update firestore document
           final documentId = widget.diaryEntry.documentId;
-          Firestore.instance
+          FirebaseFirestore.instance
               .collection('diaries')
-              .document(documentId)
-              .updateData(data);
+              .doc(documentId)
+              .update(data);
         }
         Navigator.of(context).popUntil(ModalRoute.withName('/'));
       },
