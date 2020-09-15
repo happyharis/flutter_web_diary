@@ -11,6 +11,9 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // TODO: 0.1 Import the Firebase and Firestore package in index.html and pubspec
+    // Refer to https://firebase.flutter.dev
+
     // TODO: 2. Create diaries stream to return list of DiaryEntry-s instance
     final diaryEntries = [
       DiaryEntry(body: diaryEntry, title: 'Sad Life', emoji: '😢')
